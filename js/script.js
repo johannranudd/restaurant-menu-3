@@ -92,6 +92,31 @@ const menu = [
 const menuSection = document.querySelector(".menu-section");
 const btnContainer = document.querySelector(".buttons");
 
+window.addEventListener("DOMContentLoaded", createItem(menu));
+
+function createBtn(menu) {
+  const menuCategories = menu.reduce(
+    function (total, index) {
+      if (!total.includes(index.category)) {
+        total.push(index.category);
+      }
+      return total;
+    },
+    ["all"]
+  );
+  menuCategories.map(function (item) {
+    const btn = document.createElement("button");
+    btn.classList.add("btn");
+    const attr = document.createAttribute("data-id");
+    attr.value = item;
+    btn.setAttributeNode(attr);
+    btn.textContent = item;
+    btnContainer.appendChild(btn);
+  });
+}
+
+createBtn(menu);
+
 function createItem(menu) {
   menuSection.innerHTML = "";
   menu.map(function (menuItem) {
@@ -115,14 +140,11 @@ function createItem(menu) {
   });
 }
 
-window.addEventListener("DOMContentLoaded", createItem(menu));
-
 function searchFn() {
   btnContainer.addEventListener("click", function (e) {
     const id = e.target.dataset.id;
     const filterMenu = menu.filter(function (mapItem) {
       if (mapItem.category === id) {
-        console.log(id);
         return mapItem;
       } else if (id === "all") {
         return mapItem;
